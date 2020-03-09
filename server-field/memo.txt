@@ -1,0 +1,28 @@
+# run server
+go run api-jintori.go
+
+============== operation with curl ==============
+
+# start
+curl -X GET localhost:8000/start
+
+# show
+curl -X GET localhost:8000/show
+
+# move
+curl -X POST localhost:8000/move -d "usr=1&d=r"
+
+# remove
+curl -X POST localhost:8000/remove -d "usr=1&d=r"
+
+# usrpoint
+curl -X POST localhost:8000/usrpoint -d "usr=1"
+
+# judgedirection
+curl -X POST localhost:8000/judgedirection -d "usr=1&d=r"
+
+# pointcalc 
+curl -X GET localhost:8000/pointcalc
+
+# shuffle
+curl -X GET localhost:8000/shuffle

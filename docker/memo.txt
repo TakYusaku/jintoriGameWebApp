@@ -1,0 +1,11 @@
+how to build
+
+1. docker build -t [image name] [PATH]
+    ・[PATH] は，Dockerfileが置いてあるディレクトリのPATH
+
+2. docker run -it -d -p ["host" port]:["container" port] -v ["host" directory]:/go/src/work/ --name [container name] [image name]
+    ・["host" port] は，ホスト側のポート
+    ・["container" port] は，コンテナ側のポート(jintori-field.goで定義するポートに合わせる)
+    ・["host" directory]　は，マウントしたいホスト側のディレクトリの絶対パス
+    ・[container name] は，コンテナの名前
+    ・[image name] は，先にDockerfileをbuildしたときに決めたimage name
