@@ -2,7 +2,7 @@ import requests
 import random
 
 
-def _start(port_num): # game start
+def s_start(port_num): # game start
     url = 'http://localhost:' + port_num + '/start'
     response = requests.post(url)
     # ゲーム情報(ターン数，タテ・ヨコのサイズ，得点フィールド，ユーザーフィールド)の取得と整理
@@ -17,7 +17,7 @@ def _start(port_num): # game start
     
     return turn,(length,width),pointfield
 
-def _move(port_num,usr,action): # move
+def s_move(port_num,usr,action): # move
     url = 'http://localhost:' + port_num + '/move'
     data = {
         'usr': str(usr),
@@ -25,7 +25,7 @@ def _move(port_num,usr,action): # move
     }
     response = requests.post(url, data=data)
 
-def _remove(port_num,usr,action): # remove panel
+def s_remove(port_num,usr,action): # remove panel
     url = 'http://localhost:' + port_num + '/remove'
     data = {
         'usr': str(usr),
@@ -33,7 +33,7 @@ def _remove(port_num,usr,action): # remove panel
     }
     response = requests.post(url, data=data)
 
-def _getField(port_num, length, width): # get point field, user field
+def s_getField(port_num, length, width): # get point field, user field
     url = 'http://localhost:' + port_num + '/show'
     f = requests.post(url).text.encode('utf-8').decode().replace("\n", " ").replace("  "," ")
     iv_list = [int(i) for i in f.split()]
@@ -51,13 +51,13 @@ def _getField(port_num, length, width): # get point field, user field
         pf.append(l)
     return pf,uf
 
-def _calcPoint(port_num): # calculate point
+def s_calcPoint(port_num): # calculate point
     url = 'http://localhost:' + port_num + '/pointcalc'
     response = requests.post(url).text.encode('utf-8').decode().replace("\n", " ").replace("  "," ")
     iv_list = [int(i) for i in response.split()]
     return iv_list # [tile point 1, field point 1, total point 1, tile point 2, field point 2, total point 2]
 
-def _judgeDirection(port_num,usr,action): # judge direction 
+def s_judgeDirection(port_num,usr,action): # judge direction 
     url = 'http://localhost:' + port_num + '/judgedirection'
     data = {
         'usr': str(usr),
@@ -76,11 +76,11 @@ def _judgeDirection(port_num,usr,action): # judge direction
     else: # no plobrem
         return "4"
 
-def _changeField(port_num): # change field 
+def s_changeField(port_num): # change field 
     url = 'http://localhost:' + port_num + '/change'
     f = requests.post(url)
 
-def _getPosition(port_num, usr): # get position
+def s_getPosition(port_num, usr): # get position
     url = 'http://localhost:' + port_num + '/usrpoint'
     data = {
         'usr': str(usr)
