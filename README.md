@@ -78,7 +78,8 @@ returns "turn,(length,width),pointfield" (turn is game turns (int), (length,widt
 
 #### you can get usr position (example: usr is 1)
 > game._getPosition(1)
->> out: [2, 1]
+>> out: [2, 1]  
+
 returns "[x(column), y(row)]" (by list)
 
 #### you can calculate score
