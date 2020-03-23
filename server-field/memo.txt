@@ -19,7 +19,7 @@ curl -X POST localhost:8000/remove -d "usr=1&d=r"
 curl -X POST localhost:8000/usrpoint -d "usr=1"
 
 # judgedirection
-curl -X POST localhost:8000/judgedirection -d "usr=1&d=r"
+curl -X POST localhost:8000/judgedirection -d "usr=1&d=r&motion=m"
 
 # pointcalc 
 curl -X GET localhost:8000/pointcalc

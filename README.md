@@ -89,7 +89,7 @@ returns "[x(column), y(row)]" (by list)
 returns "[tile point (usr 1), field point (usr 1), total point (usr 1), tile point (usr 2), field point (usr 2), total point (usr 2)]" (by list)
 
 #### you can judge the direction(example: usr is 1 and usr moves right)
-> game._judgeDirection(1,5)
+> game._judgeDirection(1,5,"m")
 >> out: 1
 
 returns "1", "2", "3" or "4" (by str). 
