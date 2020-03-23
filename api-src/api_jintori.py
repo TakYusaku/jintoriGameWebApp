@@ -2,8 +2,8 @@ import requests
 import random
 
 
-def s_start(port_num): # game start
-    url = 'http://localhost:' + port_num + '/start'
+def s_start(domain): # game start
+    url = domain + '/start'
     response = requests.post(url)
     # ゲーム情報(ターン数，タテ・ヨコのサイズ，得点フィールド，ユーザーフィールド)の取得と整理
     f = response.text.encode('utf-8').decode().replace("\n", " ").replace("  "," ")
@@ -17,24 +17,24 @@ def s_start(port_num): # game start
     
     return turn,(length,width),pointfield
 
-def s_move(port_num,usr,action): # move
-    url = 'http://localhost:' + port_num + '/move'
+def s_move(domain,usr,action): # move
+    url = domain + '/move'
     data = {
         'usr': str(usr),
         'd': num2str_action(action)
     }
     response = requests.post(url, data=data)
 
-def s_remove(port_num,usr,action): # remove panel
-    url = 'http://localhost:' + port_num + '/remove'
+def s_remove(domain,usr,action): # remove panel
+    url = domain + '/remove'
     data = {
         'usr': str(usr),
         'd': num2str_action(action)
     }
     response = requests.post(url, data=data)
 
-def s_getField(port_num, length, width): # get point field, user field
-    url = 'http://localhost:' + port_num + '/show'
+def s_getField(domain, length, width): # get point field, user field
+    url = domain + '/show'
     f = requests.post(url).text.encode('utf-8').decode().replace("\n", " ").replace("  "," ")
     iv_list = [int(i) for i in f.split()]
     uf = []
@@ -51,37 +51,52 @@ def s_getField(port_num, length, width): # get point field, user field
         pf.append(l)
     return pf,uf
 
-def s_calcPoint(port_num): # calculate point
-    url = 'http://localhost:' + port_num + '/pointcalc'
+def s_calcPoint(domain): # calculate point
+    url = domain + '/pointcalc'
     response = requests.post(url).text.encode('utf-8').decode().replace("\n", " ").replace("  "," ")
     iv_list = [int(i) for i in response.split()]
     return iv_list # [tile point 1, field point 1, total point 1, tile point 2, field point 2, total point 2]
 
-def s_judgeDirection(port_num,usr,action): # judge direction 
-    url = 'http://localhost:' + port_num + '/judgedirection'
+def s_judgeDirection(domain,usr,action): # judge direction 
+    url = domain + '/judgedirection'
+    flg, motion = num2str_motion(action)
+    if flg:
+        d = action
+    else:
+        if action < 13:
+            d = action - 9
+        else:
+            d = action - 8
     data = {
         'usr': str(usr),
-        'd': num2str_action(action)
+        'd': num2str_action(d),
+        'motion': motion
     }
     f = requests.post(url, data = data).text.encode('utf-8').decode().replace("\n", " ").replace("  "," ")
     iv_list = [i for i in f.split()]
-    il = [int(iv_list[1]),int(iv_list[0])] # [y(row),x(column)]
 
-    if iv_list[2] == "Error": # out of field
-        return "1"
-    elif iv_list[2] == "is_panel": # is pannel
-        return "2"
-    elif iv_list[2] == "is_user": # is user
-        return "3"
-    else: # no plobrem
-        return "4"
+    pos = s_getPosition(usr)
+    idx = next_pos_idx(d)
+    next_pos = [pos[0]-idx[0],pos[1]-idx[1]]
 
-def s_changeField(port_num): # change field 
-    url = 'http://localhost:' + port_num + '/change'
+    if iv_list[0] == "Error": # out of field
+        return "1", data, next_pos
+    elif iv_list[0] == "is_panel": # is pannel
+        return "2", data, next_pos
+    elif iv_list[0] == "is_user": # is user
+        return "3", data, next_pos
+    elif iv_list[0] == "no_panel": # no panel
+        return "4", data, next_pos
+    else:
+        return "5", data, next_pos # no plobrem
+
+
+def s_changeField(domain): # change field 
+    url = domain + '/change'
     f = requests.post(url)
 
-def s_getPosition(port_num, usr): # get position
-    url = 'http://localhost:' + port_num + '/usrpoint'
+def s_getPosition(domain, usr): # get position
+    url = domain + '/usrpoint'
     data = {
         'usr': str(usr)
     }
@@ -110,3 +125,31 @@ def num2str_action(action): # convert number into string
         return "d"
     elif action == 8:
         return "rd"
+
+def next_pos_idx(dir):
+    if action == 0:
+        return [1,1]
+    elif action == 1:
+        return [0,1]
+    elif action == 2:
+        return [-1,1]
+    elif action == 3:
+        return [1,0]
+    elif action == 4:
+        return [0,0]
+    elif action == 5:
+        return [-1,0]
+    elif action == 6:
+        return [1,-1]
+    elif action == 7:
+        return [0,-1]
+    elif action == 8:
+        return [-1,-1]   
+
+
+
+def num2str_motion(action):
+    if action < 9:
+        return True, "move"
+    else:
+        return False, "remove"

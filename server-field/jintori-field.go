@@ -337,6 +337,7 @@ func JudgeServer(w http.ResponseWriter, r *http.Request) { // ;;;
     fmt.Println(u)
     fmt.Println(r.FormValue("d"))
     d:=strings.Split(r.FormValue("d"), "")
+    mot:=strings.Split(r.FormValue("motion"), "")
 
     tmp_px:=p[u]["x"]
     tmp_py:=p[u]["y"]
@@ -346,6 +347,60 @@ func JudgeServer(w http.ResponseWriter, r *http.Request) { // ;;;
       }else if d[i]=="u"{tmp_px--
       }else if d[i]=="d"{tmp_px++}
     }
+    if 0<=tmp_px && tmp_px<length && 0<=tmp_py && tmp_py<width {
+      if mot[0]=="m" { // move
+        if u==1 {
+          // fmt.Fprintf(w,"%d ",tmp_py)  // ;;;
+          // fmt.Fprintf(w,"%d",tmp_px)  // ;;;
+          // fmt.Fprintf(w,"\n") // ;;;
+          if user[tmp_px][tmp_py]==0 || user[tmp_px][tmp_py]==5 {
+            fmt.Fprintf(w,"ok \n")
+            return
+          }else if user[tmp_px][tmp_py]==2{
+            fmt.Fprintf(w,"is_user \n")  // ;;;
+            return
+          }else{
+            fmt.Fprintf(w,"is_panel \n")  // ;;;
+            return
+          }
+        }else{
+          // fmt.Fprintf(w,"%d ",tmp_py)  // ;;;
+          // fmt.Fprintf(w,"%d",tmp_px)  // ;;;
+          // fmt.Fprintf(w,"\n")  // ;;;
+          if user[tmp_px][tmp_py]==0 || user[tmp_px][tmp_py]==6 {
+            fmt.Fprintf(w,"ok \n")
+            return
+          }else if user[tmp_px][tmp_py]==1{
+            fmt.Fprintf(w,"is_user \n")  // ;;;
+            return
+          }else{
+            fmt.Fprintf(w,"is_panel \n")  // ;;;
+            return
+          }
+        }
+      }else if mot[0]=="r"{ // remove
+        if user[tmp_px][tmp_py]!=1&&user[tmp_px][tmp_py]!=2 { // 除去希望先に自分or相手エージェントがいない
+          if user[tmp_px][tmp_py]==0 { // 除去先にパネルがない場合
+            fmt.Fprintf(w,"no_panel \n")
+            return
+          }else{
+            fmt.Fprintf(w,"ok \n")
+            return
+          }
+        }else{ // 除去希望先に自分or相手エージェントがいる場合
+            fmt.Fprintf(w,"is_user \n")
+            return
+        }
+      }
+    }else{  // out of field
+      // fmt.Fprintf(w,"%d ",p[u]["y"])  // ;;;
+      // fmt.Fprintf(w,"%d",p[u]["x"])  // ;;;
+      // fmt.Fprintf(w,"\n") // ;;;
+      fmt.Fprintf(w,"Error \n")  // ;;;
+      return
+    }
+    /*
+    // move
     if 0<=tmp_px && tmp_px<length && 0<=tmp_py && tmp_py<width {
       if u==1 {
         fmt.Fprintf(w,"%d ",tmp_py)  // ;;;
@@ -381,6 +436,7 @@ func JudgeServer(w http.ResponseWriter, r *http.Request) { // ;;;
       fmt.Fprintf(w,"Error \n")  // ;;;
       return
     }
+    */
     // user[p[u]["x"]][p[u]["y"]]=u
 }
 
