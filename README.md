@@ -1,5 +1,5 @@
-# Jintori GAME
-
+# Jintori GAME 
+unfinished...
 ## directory structure
 ```
 .
