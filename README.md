@@ -54,4 +54,26 @@
         * replay_memory(directory)  
         replay memoryのバイナリデータ
 * server-field(diectory)  
-    フィールドを構成するgo-langファイル
+    フィールドを構成するgo-langファイル  
+
+## jinGameのソースコードについて  
+* jin_NN.py  
+ネットワークの構成  
+* jin_agent.py  
+学習，評価に関する処理を記述したソース  
+* jin_consts.py  
+データ・ログの保存先を記したファイル  
+* jin_execute.py  
+学習・評価を実行する  
+* jin_init_parameter_optim.py  
+楽観的初期化のためのソース  
+* jin_jinGame.py  
+陣取りゲームを行うために必要な機能集  
+* jin_parameter.py  
+Epoch, Evaluation, Set 数を記したファイル  
+* jin_replayMemory.py
+replay memory を構成するソース  
+* jin_util.py  
+現在時刻等を取得し，変換するソース
+
+## 'save' directory の中身について
