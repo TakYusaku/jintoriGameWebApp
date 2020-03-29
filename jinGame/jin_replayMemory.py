@@ -14,16 +14,17 @@ class ReplayMemory(object):
     def push(self, *args):
         # Saves a transition.
         overWriteFlag = True
-        deleteItemID = -1
+        deleteUserID = -1
         if len(self.memory) < self.capacity:
             self.memory.append(None)
             overWriteFlag = False
         if overWriteFlag:
-            deleteItemID = self.memory[self.position].itemID
+            #print('self.memory[self.position]',self.memory[self.position])
+            deleteUserID = self.memory[self.position].userID
 
         self.memory[self.position] = Transition(*args)
         self.position = (self.position + 1) % self.capacity
-        return overWriteFlag,deleteItemID
+        return overWriteFlag,deleteUserID
 
     def sample(self, batch_size):
         return random.sample(self.memory, batch_size)

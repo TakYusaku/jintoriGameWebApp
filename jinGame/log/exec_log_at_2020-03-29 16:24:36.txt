@@ -1,0 +1,27 @@
+start time at:2020-03-29 16:24:36
+2020-03-29 16:24:36 an error has occurred...
+Traceback (most recent call last):
+  File "/home/develop/jinGame/jin_agent.py", line 905, in process
+    print('learning start:',date_to_date(now_time))
+  File "/home/develop/jinGame/jin_util.py", line 13, in date_to_date
+    date_str = datetime_obj.strftime('%Y-%m-%d %H:%M:%S')
+AttributeError: 'str' object has no attribute 'strftime'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "jin_execute.py", line 42, in main
+    jin_agent.main()
+  File "/home/develop/jinGame/jin_agent.py", line 983, in main
+    res = agent.process(env)
+  File "/home/develop/jinGame/jin_agent.py", line 973, in process
+    df = pd.DataFrame(df_Logs)
+  File "/usr/local/lib/python3.6/dist-packages/pandas/core/frame.py", line 435, in __init__
+    mgr = init_dict(data, index, columns, dtype=dtype)
+  File "/usr/local/lib/python3.6/dist-packages/pandas/core/internals/construction.py", line 254, in init_dict
+    return arrays_to_mgr(arrays, data_names, index, columns, dtype=dtype)
+  File "/usr/local/lib/python3.6/dist-packages/pandas/core/internals/construction.py", line 64, in arrays_to_mgr
+    index = extract_index(arrays)
+  File "/usr/local/lib/python3.6/dist-packages/pandas/core/internals/construction.py", line 365, in extract_index
+    raise ValueError("arrays must all be same length")
+ValueError: arrays must all be same length

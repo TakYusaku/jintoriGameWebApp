@@ -1,0 +1,4 @@
+,num_sets,num_epochs,num_games_per_selfplay,now_exec,num_agent_won,num_opponent_won,agent_won,won_target_network,won_policy_network
+0,3,3,3,1.0,1.0,2.0,0.0,./save/parameter/2020-03-29/policy_2020-03-29 16:28:57_0_T.pt,./save/parameter/2020-03-29/target_2020-03-29 16:28:57_0_T.pt
+1,3,3,3,2.0,1.0,2.0,0.0,./save/parameter/2020-03-29/target_2020-03-29 16:28:57_0_T.pt,./save/parameter/2020-03-29/policy_2020-03-29 16:28:57_0_T.pt
+2,3,3,3,3.0,3.0,0.0,1.0,./save/parameter/2020-03-29/target_2020-03-29 16:30:34_2_T.pt,./save/parameter/2020-03-29/policy_2020-03-29 16:30:34_2_T.pt

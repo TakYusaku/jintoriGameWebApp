@@ -72,10 +72,11 @@ def s_judgeDirection(domain,usr,action): # judge direction
         'd': num2str_action(d),
         'motion': motion
     }
+
     f = requests.post(url, data = data).text.encode('utf-8').decode().replace("\n", " ").replace("  "," ")
     iv_list = [i for i in f.split()]
 
-    pos = s_getPosition(usr)
+    pos = s_getPosition(domain, usr)
     idx = next_pos_idx(d)
     next_pos = [pos[0]-idx[0],pos[1]-idx[1]]
 
@@ -126,24 +127,24 @@ def num2str_action(action): # convert number into string
     elif action == 8:
         return "rd"
 
-def next_pos_idx(dir):
-    if action == 0:
+def next_pos_idx(dire):
+    if dire == 0:
         return [1,1]
-    elif action == 1:
+    elif dire == 1:
         return [0,1]
-    elif action == 2:
+    elif dire == 2:
         return [-1,1]
-    elif action == 3:
+    elif dire == 3:
         return [1,0]
-    elif action == 4:
+    elif dire == 4:
         return [0,0]
-    elif action == 5:
+    elif dire == 5:
         return [-1,0]
-    elif action == 6:
+    elif dire == 6:
         return [1,-1]
-    elif action == 7:
+    elif dire == 7:
         return [0,-1]
-    elif action == 8:
+    elif dire == 8:
         return [-1,-1]   
 
 

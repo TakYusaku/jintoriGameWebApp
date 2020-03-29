@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from jin_agent, jin_util import *
+from jin_util import *
 
 LOG_DIRECTORY_NAME = './log/'
 EVAL_HISTORY_DIRECTORY_NAME = './save/history/eval/'
@@ -7,7 +7,7 @@ LEARN_HISTORY_DIRECTORY_NAME = './save/history/learn/'
 PARAMETER_DIRECTORY_NAME = './save/parameter/'
 REPLAYMEMORY_DIRECTORY_NAME = './save/replay_memory/'
 
-date_today_str = date_to_str(get_japantime_today())
+date_today_str = get_japantime_today()
 TODAYS_DATE_DIRECTORY_NAME = date_today_str + '/'
 
 TODAYS_DATE = ''
@@ -16,7 +16,6 @@ EXPORT_EVAL_HISTORY_FILE_NAME = ''
 EXPORT_LEARN_HISTORY_FILE_NAME = ''
 # learn_history_(現在のセット数(現在何セット目か))_(現在のepoch回数(現在selfplayの何ゲーム目か))_(TODAYS_DATE).csv
 
-
 IMPORT_FILE_NAME='environment_10_request.csv'
 EXPORT_FILE_NAME='environment_10_response.csv'
 
@@ -24,11 +23,12 @@ IMPORT_POLICY_FILE_NAME=''
 IMPORT_TARGET_FILE_NAME = ''
 EXPORT_POLICY_FILE_NAME = ''
 EXPORT_TARGET_FILE_NAME = ''
-
+'''
 EXPORT_REPLAYMEMORY_FILE_NAME_1 = ''
 EXPORT_REPLAYMEMORY_FILE_NAME_2 = ''
 IMPORT_REPLAYMEMORY_FILE_NAME_1 = ''
 IMPORT_REPLAYMEMORY_FILE_NAME_2 = ''
+'''
 
 '''
 .
