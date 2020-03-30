@@ -1,8 +1,0 @@
-start time at:2020-03-29 15:32:42
-2020-03-29 15:32:48 an error has occurred...
-Traceback (most recent call last):
-  File "jin_execute.py", line 46, in main
-    save_error_log()
-  File "jin_execute.py", line 21, in save_error_log
-    f = open(file_name,'a')
-FileNotFoundError: [Errno 2] No such file or directory: ''

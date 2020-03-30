@@ -57,7 +57,7 @@ def s_calcPoint(domain): # calculate point
     iv_list = [int(i) for i in response.split()]
     return iv_list # [tile point 1, field point 1, total point 1, tile point 2, field point 2, total point 2]
 
-def s_judgeDirection(domain,usr,action): # judge direction 
+def s_judgeDirection(domain,usr,action): # judge direction
     url = domain + '/judgedirection'
     flg, motion = num2str_motion(action)
     if flg:
@@ -80,14 +80,17 @@ def s_judgeDirection(domain,usr,action): # judge direction
     idx = next_pos_idx(d)
     next_pos = [pos[0]-idx[0],pos[1]-idx[1]]
 
+    if action==4:
+        return "5", data, next_pos
+
     if iv_list[0] == "Error": # out of field
         return "1", data, next_pos
     elif iv_list[0] == "is_panel": # is pannel
-        return "2", data, next_pos
-    elif iv_list[0] == "is_user": # is user
         return "3", data, next_pos
-    elif iv_list[0] == "no_panel": # no panel
+    elif iv_list[0] == "is_user": # is user
         return "4", data, next_pos
+    elif iv_list[0] == "no_panel": # no panel
+        return "2", data, next_pos
     else:
         return "5", data, next_pos # no plobrem
 

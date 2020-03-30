@@ -69,9 +69,9 @@ unfinished...
 楽観的初期化のためのソース  
 * jin_jinGame.py  
 陣取りゲームを行うために必要な機能集  
-* jin_parameter.py  
+* jin_parameter.py    
 Epoch, Evaluation, Set 数を記したファイル  
-* jin_replayMemory.py
+* jin_replayMemory.py  
 replay memory を構成するソース  
 * jin_util.py  
 現在時刻等を取得し，変換するソース

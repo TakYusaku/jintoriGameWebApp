@@ -44,7 +44,8 @@ class jinGAME():
 
     def check_action(self,action):  # 行動先が被っていないか判定し，実際に行う行動を決定する
         # action = {"n_position": 座標,"motion": move or remove,"direction": 方向,"is_possible": s_judjedirection()のコード}
-        if action["n_position"][0] == action["n_position"][1]: # 行動先がかぶるとき
+        if action["next_position"][0] == action["next_position"][1]: # 行動先がかぶるとき
+            print('is_confliction')
             usr1_data = {'motion':"move", "lists": [1,4]}
             usr2_data = {'motion':"move", "lists": [2,4]}
             m_data = [usr1_data,usr2_data]
@@ -74,7 +75,10 @@ class jinGAME():
                 t_data = {'motion':action["do_motion"][i],'lists':[i+1,int(str2num_action(action["do_direction"][i]))]}
 
             if t_data['motion'] == 'remove':
-                n_data = t_data['lists'][1] + 9
+                if t_data['lists'][1] < 4:
+                    n_data = t_data['lists'][1] + 9
+                else:
+                    n_data = t_data['lists'][1] + 8
             else:
                 n_data = t_data['lists'][1]
             data_num.append(n_data)

@@ -51,6 +51,7 @@ class jinGame_DQNAgent():
 
         self.action_history = deque() # 行った行動を保存しておく
         self.agent_history = [[],[],[]] # [[#loss_median], [# target_name], [# policy_name]]
+        self.feature_for_reward = [[],[],[]] #[[before_reward],[now_reward],[code]]
 
         self.EXPORT_REPLAYMEMORY_FILE_NAME_1 = ''
         self.EXPORT_REPLAYMEMORY_FILE_NAME_2 = ''
@@ -150,6 +151,9 @@ class jinGame_DQNAgent():
         sampled_reward = sampled_reward.to(self.device)
 
         #dimで指定された軸(dim=1(列))に沿って、選択した行動を基にQ(s_t, a)を収集。
+        #print('sampled_action',sampled_action)
+        #print('sampled_action.unsqueeze(1).long()',sampled_action.unsqueeze(1).long())
+        #print('self.policy_net(sampled_state)',self.policy_net(sampled_state))
         state_action_values = self.policy_net(sampled_state).gather(1, sampled_action.unsqueeze(1).long())
         #target_netでは次の状態でのQ値を出す。ここではmaxを取る
         next_state_values = self.target_net(sampled_next_state).max(1)[0].detach()
@@ -173,9 +177,10 @@ class jinGame_DQNAgent():
         #第一引数に元の数値、第二引数に桁数（何桁に丸めるか）を指定する。
         return round(float(sampleLoss), 3)
 
-    def reward(self,reward_r):
+    def _reward(self,usr):
         #return 2*sigmoid(reward_r/100)-1
-        return reward_r/5
+        rewards = (self.feature_for_reward[1][usr] - self.feature_for_reward[0][usr])/6 + (self.feature_for_reward[2][usr]-5)/5
+        return round(rewards/2,3)
 
     def _insert_agent(self, user_id):
         japantime_now = get_japantime_now()
@@ -295,7 +300,8 @@ class jinGame_DQNAgent():
             #print("######### policy net ###")
             #print('self.policy_net',self.policy_net)
             #print('(state)',self.policy_net(state))
-            if sample < eps_threshold:
+            if sample > eps_threshold:
+            #if sample < eps_threshold:
                 with torch.no_grad():
                     return self.policy_net(state).max(1)[1]
             else:
@@ -469,8 +475,7 @@ class jinGame_DQNAgent():
 
         #before_features_listの内容を追加する。辞書の更新とreplay_memoryの更新
         replay_memory_count = 0
-        reward = np.array([0,0])
-        reward_r = 10
+        reward = []
         for i in range(len(state)):
             #ここで取り出される順番はitemIDListと対応している。
             #辞書からvalueListを取得。
@@ -481,7 +486,7 @@ class jinGame_DQNAgent():
             replay_memory_itemID_valueList = replay_memory_dic[itemIDList[i]]
             '''
             # reward
-            reward[i] = self.reward(reward_r)
+            reward.append(self._reward(i))
 
             if replay_memory_dic[str(userIDList[i])] is None:
                 continue
@@ -535,9 +540,7 @@ class jinGame_DQNAgent():
         new_action = np.array([0,0])
         #next_stateからnew_actionが求まる　このnew_actionからnew_priceが求まり、これがreturnされる。
         for i in range(len(df_division)):
-            tmp = self._select_action(next_state[i])
-            #print(tmp)
-            new_action[i] = tmp#self._select_action(next_state[i])
+            new_action[i] = self._select_action(next_state[i])
         
         '''
         for idx, product in enumerate(df_division.iterrows()):
@@ -590,7 +593,7 @@ class jinGame_DQNAgent():
         #print('run agent already exist wake up at ', self.steps_done)
         '''
         self._report_agent()
-        return new_action, returnLoss, reward
+        return new_action, returnLoss, np.array(reward)
 
     def agent_learning(self, env, idx, evaluation=False): # 一定期間試合を行わせて学習をさせる
         epochs_done = 0 # 正しく実行された回数をカウント
@@ -652,6 +655,17 @@ class jinGame_DQNAgent():
                 #k_division = 17 # 行動数
                 #states_num = 18 #len(data) 特徴量の大きさ(skalar)
                 model = param_init_model(data, self.k_division, self.states_number, ite = 20, epoch = 5)
+                
+                # 移動前に得点を取得
+                point_before_moving = env._calcPoint()
+
+                if t==0:
+                    self.feature_for_reward[0] = [0,0] # before_point
+                    self.feature_for_reward[1] = [point_before_moving[2],point_before_moving[5]] # now_point
+                    self.feature_for_reward[2] = [0,0] # code
+                else:
+                    self.feature_for_reward[0] = self.feature_for_reward[1] # before_point
+                    self.feature_for_reward[1] = [point_before_moving[2],point_before_moving[5]] # now_point
 
                 # 特徴量をもとにネットワークから行動を取得
                     # run_agent() で次の行動を決める(実際に行動はしない)
@@ -679,14 +693,17 @@ class jinGame_DQNAgent():
                 df_action["do_motion"] = []
                 df_action["do_direction"] = []
                 df_action["is_possible"] = []
-                df_action["n_position"] = []
+                df_action['now_position'] = []
+                df_action["next_position"] = []
 
                 for usrID in enumerate(usr_id_division):
                     code, data, next_pos = env._judgeDirection(usrID[1],new_action[usrID[1]-1])
                     df_action["do_motion"].append(data['motion'])
                     df_action["do_direction"].append(data['d'])
                     df_action["is_possible"].append(code)
-                    df_action["n_position"].append(next_pos)
+                    self.feature_for_reward[2][usrID[1]-1] = int(code)
+                    df_action['now_position'].append(env._getPosition(usrID[1]))
+                    df_action["next_position"].append(next_pos)
             
                 # エージェントの移動先が重なってるか，いないかを判定し行動を決定
                 #print(df_action)
@@ -698,8 +715,6 @@ class jinGame_DQNAgent():
                 df_dic["is_confliction"] = np.array([cnf]*2)
                 #print(df_dic)
 
-                # 移動前に得点を取得
-                point_before_moving = env._calcPoint()
                 #print(m_data)
                 # 判定後に実際に移動させる
                 env.do_action(m_data[0])
@@ -800,24 +815,26 @@ class jinGame_DQNAgent():
                 
                 # item_id_division:usrID(のリスト), new_price_division: usrの次の行動("n_position": 座標,"motion": move or remove,"direction": 方向,"is_possible": s_judjedirection()のコード)
                 usr_id_division = np.array([1,2])
-                df_dic = {'usrID': usr_id_division, 'now_eval': np.array([idx+1]*2), 'num_game': np.array([games_num+1]*2),'now_game': np.array([g_num]*2), 'num_turn': np.array([turn]*2),'now_turn': np.array([t+1]*2), 'calcAction': new_action}#* len(item_id_division))} # num_ : 総数(総ターンなど), now_: 現在(現在は5ターン目など)
+                df_dic = {'usrID': usr_id_division, 'now_eval': np.array([idx+1]*2), 'num_game': np.array([games_num]*2),'now_game': np.array([g_num+1]*2), 'num_turn': np.array([turn]*2),'now_turn': np.array([t+1]*2), 'calcAction': new_action}#* len(item_id_division))} # num_ : 総数(総ターンなど), now_: 現在(現在は5ターン目など)
                 #df_dic = {'calcAction': new_action, 'Loss': np.array([loss]*2), 'reward': reward}#* len(item_id_division))}
 
-                df_dic = pd.DataFrame(data=df_dic)
+                #df_dic = pd.DataFrame(data=df_dic)
 
                 # action = {"n_position": 座標,"motion": move or remove,"direction": 方向,"is_possible": s_judjedirection()のコード}
                 df_action = {}
                 df_action["do_motion"] = []
                 df_action["do_direction"] = []
                 df_action["is_possible"] = []
-                df_action["n_position"] = []
+                df_action['now_position'] = []
+                df_action["next_position"] = []
 
                 for usrID in enumerate(usr_id_division):
-                    code, data, next_pos = env._judgeDirection(usrID,new_action[usrID[1]-1])
+                    code, data, next_pos = env._judgeDirection(usrID[1],new_action[usrID[1]-1])
                     df_action["do_motion"].append(data['motion'])
                     df_action["do_direction"].append(data['d'])
                     df_action["is_possible"].append(code)
-                    df_action["n_position"].append(next_pos)
+                    df_action['now_position'].append(env._getPosition(usrID[1]))
+                    df_action["next_position"].append(next_pos)
             
                 # エージェントの移動先が重なってるか，いないかを判定し行動を決定
                 cnf, m_data, n_data = env.check_action(df_action)
