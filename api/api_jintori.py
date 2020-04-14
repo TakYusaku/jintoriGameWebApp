@@ -21,16 +21,18 @@ def s_move(domain,usr,action): # move
     url = domain + '/move'
     data = {
         'usr': str(usr),
-        'd': num2str_action(action)
+        'd': num2str_action(int(action))
     }
+    #print('s_move,data',data)
     response = requests.post(url, data=data)
 
 def s_remove(domain,usr,action): # remove panel
     url = domain + '/remove'
     data = {
         'usr': str(usr),
-        'd': num2str_action(action)
+        'd': num2str_action(int(action))
     }
+    #print('s_remove: ', data)
     response = requests.post(url, data=data)
 
 def s_getField(domain, length, width): # get point field, user field
@@ -57,42 +59,48 @@ def s_calcPoint(domain): # calculate point
     iv_list = [int(i) for i in response.split()]
     return iv_list # [tile point 1, field point 1, total point 1, tile point 2, field point 2, total point 2]
 
-def s_judgeDirection(domain,usr,action): # judge direction
+def s_judgeDirection(domain,usr,action,motion=None): # judge direction
     url = domain + '/judgedirection'
-    flg, motion = num2str_motion(action)
-    if flg:
-        d = action
-    else:
-        if action < 13:
-            d = action - 9
+    if motion is None: # 学習
+        flg, motions = num2str_motion(action)
+        if flg:
+            d = action
         else:
-            d = action - 8
-    data = {
-        'usr': str(usr),
-        'd': num2str_action(d),
-        'motion': motion
-    }
-
+            if action < 13:
+                d = action - 9
+            else:
+                d = action - 8
+        data = {
+            'usr': str(usr),
+            'd': num2str_action(d),
+            'motion': motions
+        }
+    else: # web_app
+        data = {
+            'usr': str(usr),
+            'd': num2str_action(int(action)),
+            'motion': motion
+        }
+        d = int(action)
     f = requests.post(url, data = data).text.encode('utf-8').decode().replace("\n", " ").replace("  "," ")
     iv_list = [i for i in f.split()]
 
     pos = s_getPosition(domain, usr)
     idx = next_pos_idx(d)
     next_pos = [pos[0]-idx[0],pos[1]-idx[1]]
-
-    if action==4:
+    if int(action)==4:
         return "5", data, next_pos
 
-    if iv_list[0] == "Error": # out of field
+    if iv_list[0] == "Error": # out of field (move,remove)
         return "1", data, next_pos
-    elif iv_list[0] == "is_panel": # is pannel
+    elif iv_list[0] == "is_panel": # is pannel (move)
         return "3", data, next_pos
-    elif iv_list[0] == "is_user": # is user
+    elif iv_list[0] == "is_user": # is user (move, remove)
         return "4", data, next_pos
-    elif iv_list[0] == "no_panel": # no panel
+    elif iv_list[0] == "no_panel": # no panel (remove)
         return "2", data, next_pos
     else:
-        return "5", data, next_pos # no plobrem
+        return "5", data, next_pos # no plobrem (move, remove)
 
 
 def s_changeField(domain): # change field 

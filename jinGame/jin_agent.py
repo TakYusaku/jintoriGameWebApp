@@ -32,7 +32,7 @@ def get_dim_list(li): # 2次元配列(list)のshapeを取得
 
 class jinGame_DQNAgent():
     # 何か初期化がいるなら追加する
-    def __init__(self,k_division=17, states_number=18, eps_start=0.99, eps_end=0.1, eps_decay=100,gamma=0.9, target_update=7):
+    def __init__(self,k_division=17, states_number=27, eps_start=0.99, eps_end=0.1, eps_decay=100,gamma=0.9, target_update=7):
         self.k_division = k_division
         self.states_number = states_number
         self.actions_number = k_division
@@ -48,6 +48,8 @@ class jinGame_DQNAgent():
         self.memory_length = 0
         self.samplingCount = 0
         self.averageLoss = -1
+
+        self.on_epsilon_zero = ON_EPSILON_ZERO
 
         self.action_history = deque() # 行った行動を保存しておく
         self.agent_history = [[],[],[]] # [[#loss_median], [# target_name], [# policy_name]]
@@ -65,17 +67,34 @@ class jinGame_DQNAgent():
 
     #初期化
     def _init_agent(self, flg=False):
-        if not flg: # 学習のとき
-            self.policy_net = DQN(self.states_number, self.actions_number).to(self.device)
-            self.target_net = DQN(self.states_number, self.actions_number).to(self.device)
-            self.target_net.eval()
-            self.optimizer = optim.RMSprop(self.policy_net.parameters(),lr=1e-4)
-            self.replay_memory = ReplayMemory(self.memory_length)
-        else: # evaluationのとき
-            self.policy_net_a = DQN(self.states_number, self.actions_number).to(self.device)
-            self.target_net_a = DQN(self.states_number, self.actions_number).to(self.device)
-            self.policy_net_e = DQN(self.states_number, self.actions_number).to(self.device)
-            self.target_net_e = DQN(self.states_number, self.actions_number).to(self.device)
+        if self.on_epsilon_zero: # epsilon-zero起動時
+            if not flg: # 学習のとき
+                self.policy_net = DQN_epsZero(self.states_number, self.actions_number).to(self.device)
+                self.target_net = DQN_epsZero(self.states_number, self.actions_number).to(self.device)
+                self.target_net.eval()
+                self.optimizer = optim.RMSprop(self.policy_net.parameters(),lr=1e-4)
+                self.replay_memory = ReplayMemory(self.memory_length)
+            else: # evaluationのとき
+                self.policy_net_a = DQN_epsZero(self.states_number, self.actions_number).to(self.device)
+                self.target_net_a = DQN_epsZero(self.states_number, self.actions_number).to(self.device)
+                self.target_net_a.eval()
+                self.policy_net_e = DQN_epsZero(self.states_number, self.actions_number).to(self.device)
+                self.target_net_e = DQN_epsZero(self.states_number, self.actions_number).to(self.device)
+                self.target_net_e.eval()
+        else: # dqnのとき
+            if not flg: # 学習のとき
+                self.policy_net = DQN(self.states_number, self.actions_number).to(self.device)
+                self.target_net = DQN(self.states_number, self.actions_number).to(self.device)
+                self.target_net.eval()
+                self.optimizer = optim.RMSprop(self.policy_net.parameters(),lr=1e-4)
+                self.replay_memory = ReplayMemory(self.memory_length)
+            else: # evaluationのとき
+                self.policy_net_a = DQN(self.states_number, self.actions_number).to(self.device)
+                self.target_net_a = DQN(self.states_number, self.actions_number).to(self.device)
+                self.target_net_a.eval()
+                self.policy_net_e = DQN(self.states_number, self.actions_number).to(self.device)
+                self.target_net_e = DQN(self.states_number, self.actions_number).to(self.device)
+                self.target_net_e.eval()
 
     def _load_agent(self,file_name=None,flg=False): # fn_agent = {"policy": [name], "target": [name] }
         if not flg: # 学習の際
@@ -270,8 +289,8 @@ class jinGame_DQNAgent():
             flag_str = 'T'
         else:
             flag_str = 'F'
-        dir_name = PARAMETER_DIRECTORY_NAME + TODAYS_DATE_DIRECTORY_NAME
-        os.makedirs(dir_name, exist_ok=True)
+        #dir_name = PARAMETER_DIRECTORY_NAME + TODAYS_DATE_DIRECTORY_NAME
+        dir_name = PARAMETER_DIRECTORY_NAME
         tmp = date_now_str + '_' + idx_str + '_' + flag_str + '.pt'
         fn = {"policy":dir_name + 'policy_' + tmp, "target": dir_name + 'target_' + tmp}
         return fn
@@ -640,7 +659,6 @@ class jinGame_DQNAgent():
                     (env.get_features(t+1,1),env.get_features(t+1,2)),
                     dim=0 # 横長の配列を縦に並べる
                 )#前ターンの行動後(つまり現ターンの行動前)の特徴量
-                
                 data = torch.cat(
                     (before_features, now_features),
                     dim = 0 # 配列を縦にくっつける
@@ -654,7 +672,7 @@ class jinGame_DQNAgent():
                 # for 楽観的初期化
                 #k_division = 17 # 行動数
                 #states_num = 18 #len(data) 特徴量の大きさ(skalar)
-                model = param_init_model(data, self.k_division, self.states_number, ite = 20, epoch = 5)
+                model = param_init_model(data, self.k_division, self.states_number, self.on_epsilon_zero, ite = 20, epoch = 5)
                 
                 # 移動前に得点を取得
                 point_before_moving = env._calcPoint()
@@ -713,6 +731,7 @@ class jinGame_DQNAgent():
                 #df_action["is_possible"] = np.array([int(i) for i in enumerate(df_action["is_possible"][1])])
                 df_dic.update(df_action)
                 df_dic["is_confliction"] = np.array([cnf]*2)
+                df_dic['on_eps_zero'] = np.array([self.on_epsilon_zero]*2)
                 #print(df_dic)
 
                 #print(m_data)
@@ -796,7 +815,6 @@ class jinGame_DQNAgent():
                     dim=0 # 横長の配列を縦に並べる
                 )#前ターンの行動後(つまり現ターンの行動前)の特徴量
 
-                before_features = now_features # 次ターンのbefore_featuresに，現ターン行動前の特徴量を設定する
                 data = torch.cat(
                     (before_features, now_features),
                     dim = 0 # 配列を縦にくっつける
@@ -806,9 +824,12 @@ class jinGame_DQNAgent():
                     dim = 1 # 配列を縦にくっつける
                 )
 
+                before_features = now_features # 次ターンのbefore_featuresに，現ターン行動前の特徴量を設定する
                 dim = df_division.shape
                 next_state = torch.FloatTensor(df_division[:,int(dim[1]/2):])
                 new_action = np.array([0,0])
+                next_state[0] = next_state[0].to(self.device)
+                next_state[1] = next_state[1].to(self.device)
                 with torch.no_grad():
                     new_action[0] = self.policy_net_a(next_state[0]).max(1)[1]
                     new_action[1] = self.policy_net_a(next_state[1]).max(1)[1]
@@ -860,14 +881,15 @@ class jinGame_DQNAgent():
                 df_dic['after_tilepoint'] = np.array([point_after_moving[0],point_after_moving[3]])
                 df_dic['after_areapoint'] = np.array([point_after_moving[1],point_after_moving[4]])
                 df_dic['after_totalpoint'] = np.array([point_after_moving[2],point_after_moving[5]])
+                df_dic['on_eps_zero'] = np.array([self.on_epsilon_zero]*2)
                 # logを保存
                 df = pd.DataFrame(df_dic)
                 if g_num==0 and t==0:
-                    EXPORT_EVAL_HISTORY_FILE_NAME = 'eval_history_' + str(idx) + '_' + TODAYS_DATE + '.csv'
+                    self.EXPORT_EVAL_HISTORY_FILE_NAME = 'eval_history_' + str(idx) + '_' + TODAYS_DATE + '.csv'
                     #EXPORT_EVAL_HISTORY_FILE_NAME = 'eval_history_' + str(idx) + '_' + str(g_num) + '_' + TODAYS_DATE + '.csv'
-                    df.to_csv(EVAL_HISTORY_DIRECTORY_NAME + EXPORT_EVAL_HISTORY_FILE_NAME, encoding='shift_jis')
+                    df.to_csv(EVAL_HISTORY_DIRECTORY_NAME + self.EXPORT_EVAL_HISTORY_FILE_NAME, encoding='shift_jis')
                 else:
-                    df.to_csv(EVAL_HISTORY_DIRECTORY_NAME + EXPORT_EVAL_HISTORY_FILE_NAME, mode='a', header=False, encoding='shift_jis')
+                    df.to_csv(EVAL_HISTORY_DIRECTORY_NAME + self.EXPORT_EVAL_HISTORY_FILE_NAME, mode='a', header=False, encoding='shift_jis')
             
             self.action_history.clear()
             if self.judgeWorL(df_dic):
@@ -971,6 +993,7 @@ class jinGame_DQNAgent():
             df_Logs['agent_won'] = agent_won
             df_Logs['won_target_network'] = won_network_filename_target
             df_Logs['won_policy_network'] = won_network_filename_policy
+            df_Logs['on_eps_zero'] = np.array([self.on_epsilon_zero]*NUMBER_OF_SETS)
 
             df = pd.DataFrame(df_Logs)
             EXPORT_NAME = EVAL_HISTORY_DIRECTORY_NAME + 'WoL_history_' + TODAYS_DATE + '.csv'

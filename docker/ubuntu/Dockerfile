@@ -24,7 +24,7 @@ RUN apt upgrade -y
 RUN apt autoremove -y
 RUN apt autoclean -y
 
-RUN pip3 install retry && pip3 install pandas && pip3 install collections-extended && pip3 install requests
+RUN pip3 install retry && pip3 install pandas && pip3 install collections-extended && pip3 install requests && pip3 install flask
 RUN pip install pytz && pip install python-dateutil
 RUN pip3 install torch==1.3.0+cpu torchvision==0.4.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
 

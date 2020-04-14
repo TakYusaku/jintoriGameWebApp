@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="jquery-3.1.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+ 
+</head>
+<body>
+ 
+    <script>
+        debugger;
+        'use strict';
+ 
+        // 作成するテーブルの定義
+        var r_end = 5;  // 行数
+        var c_end = 4;  // 列数
+ 
+        /*------------------------------------------------
+         jQuery でプログラム的にテーブルを作成する
+        --------------------------------------------------*/
+        $(document).ready(function () {
+ 
+            alert('次に実行（jQuery版）');
+ 
+            var tableJQ = $('<table id="table_id1">');
+            for (var r = 1; r <= r_end; r++) {
+                var r000 = padLeft('0000', r);
+                var trJQ_r = $('<tr></tr>').appendTo(tableJQ);
+                for (var c = 1; c <= c_end; c++) {
+                    var c000 = padLeft('0000', c);
+                    var tdJQ_r_c = $('<td>r=' + r000 + ':c=' + c000 + '</td>').appendTo(trJQ_r);
+                    // tdJQ_r_cはこれ以降で使わないなら変数に入れなくもて良いかも。
+                }
+            }
+ 
+            $('body').append('<h1>jQuery方式でんがな</h1>').append(tableJQ);
+        });
+ 
+        /*------------------------------------------------
+         JavaScript でプログラム的にテーブルを作成する
+        --------------------------------------------------*/
+ 
+        window.onload = function () {
+ 
+            alert('先に実行（JavaScript版）');
+ 
+            var tableJs = document.createElement('table');
+            tableJs.id = 'table_id2';
+            for (var r = 1; r <= r_end; r++) {
+                var r000 = padLeft('0000', r);
+                var trJs = document.createElement('tr');
+                for (var c = 1; c <= c_end; c++) {
+                    var c000 = padLeft('0000', c);
+                    var tdJs = document.createElement('td');
+                    tdJs.innerHTML = 'r=' + r000 + ':c=' + c000;
+                    trJs.appendChild(tdJs);
+                }
+                tableJs.appendChild(trJs);
+            }
+ 
+            var bodyJs = document.body;
+            //x var bodyJs = document.getElementById('body');
+            //o var bodyJs = document.getElementsByTagName('body')[0];
+            var h1Js = document.createElement('h1');
+            h1Js.innerHTML = 'JavaScript方式でんがな';
+            bodyJs.appendChild(h1Js);
+            bodyJs.appendChild(tableJs);
+        }
+ 
+        /*------------------------------------------------
+         文字列の左右に指定した文字を連結して固定長にする
+        --------------------------------------------------*/
+        function padLeft(pad, str) {
+            if (typeof str === 'undefined')
+                return pad;
+ 
+            return (pad + str).slice(-pad.length);
+        }
+        function padRight(pad, str) {
+            if (typeof str === 'undefined')
+                return pad;
+ 
+            return (str + pad).substring(0, pad.length);
+        }
+    </script>
+ 
+    <style>
+        #table_id1 td {
+            border: 3px solid red;
+        }
+ 
+        #table_id2 td {
+            border: 3px solid #00ff21;
+        }
+          /* --- セルにカーソルが乗ったとき --------------- */
+        #table_id1 td:hover {
+        background    : #bbb;           /* 背景色    */
+        color         : black;           /* 文字色    */
+        }
+          /* --- セルにカーソルが乗ったとき --------------- */
+        #table_id2 td:hover {
+        background    : #bbb;           /* 背景色    */
+        color         : black;           /* 文字色    */
+        }
+    </style>
+ 
+</body>
+</html>
+ 
+<!--
+メモ
+Firefox 50.0.2 の場合には何故か
+    次に実行（jQuery版）、先に実行（JavaScript版）
+の順に表示されるのに、出来上がるテーブルはJavaScript版、jQuery版の順になった。
+何でかな？分からん。 
+-->

@@ -1,0 +1,11 @@
+,num_sets,num_epochs,num_games_per_selfplay,now_exec,num_agent_won,num_opponent_won,agent_won,won_target_network,won_policy_network,on_eps_zero
+0,10,10,10,1.0,4.0,6.0,0.0,./save/parameter/2020-04-11/policy_2020-04-11 23:58:36_0_T.pt,./save/parameter/2020-04-11/target_2020-04-11 23:58:36_0_T.pt,True
+1,10,10,10,2.0,5.0,5.0,0.0,./save/parameter/2020-04-11/target_2020-04-12 00:01:10_1_T.pt,./save/parameter/2020-04-11/policy_2020-04-12 00:01:10_1_T.pt,True
+2,10,10,10,3.0,5.0,5.0,0.0,./save/parameter/2020-04-11/target_2020-04-12 00:03:43_2_T.pt,./save/parameter/2020-04-11/policy_2020-04-12 00:03:43_2_T.pt,True
+3,10,10,10,4.0,6.0,4.0,1.0,./save/parameter/2020-04-11/target_2020-04-12 00:06:05_3_T.pt,./save/parameter/2020-04-11/policy_2020-04-12 00:06:05_3_T.pt,True
+4,10,10,10,5.0,5.0,5.0,0.0,./save/parameter/2020-04-11/target_2020-04-12 00:08:27_4_T.pt,./save/parameter/2020-04-11/policy_2020-04-12 00:08:27_4_T.pt,True
+5,10,10,10,6.0,7.0,3.0,1.0,./save/parameter/2020-04-11/target_2020-04-12 00:11:01_5_T.pt,./save/parameter/2020-04-11/policy_2020-04-12 00:11:01_5_T.pt,True
+6,10,10,10,7.0,5.0,5.0,0.0,./save/parameter/2020-04-11/target_2020-04-12 00:13:36_6_T.pt,./save/parameter/2020-04-11/policy_2020-04-12 00:13:36_6_T.pt,True
+7,10,10,10,8.0,5.0,5.0,0.0,./save/parameter/2020-04-11/target_2020-04-12 00:16:14_7_T.pt,./save/parameter/2020-04-11/policy_2020-04-12 00:16:14_7_T.pt,True
+8,10,10,10,9.0,6.0,4.0,1.0,./save/parameter/2020-04-11/target_2020-04-12 00:18:46_8_T.pt,./save/parameter/2020-04-11/policy_2020-04-12 00:18:46_8_T.pt,True
+9,10,10,10,10.0,3.0,7.0,0.0,./save/parameter/2020-04-11/target_2020-04-12 00:03:43_2_T.pt,./save/parameter/2020-04-11/policy_2020-04-12 00:03:43_2_T.pt,True

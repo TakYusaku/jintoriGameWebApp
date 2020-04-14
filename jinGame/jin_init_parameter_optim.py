@@ -53,9 +53,12 @@ def load_csv(environ_df, features_list, before_features_list, category_list, sta
 
     return data
 
-def param_init_model(data, k_division, states_num, ite = 20, epoch = 100):
+def param_init_model(data, k_division, states_num, on_eps_zero, ite = 20, epoch = 100):
     
-    model = DQN(states_num, k_division)
+    if on_eps_zero:
+        model = DQN_epsZero(states_num, k_division)
+    else:
+        model = DQN(states_num, k_division)
     
     #to GPU
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

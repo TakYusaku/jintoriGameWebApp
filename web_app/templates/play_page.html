@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>jintori PlayPage</title>
+  <!--<script src="jquery-3.1.1.js"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script type="text/javascript" src="static/js/main.js"></script>
+</head>
+<body>
+  <h1 class='title'>jintori GAME</h1>
+  <div class='objct'>
+    <div class='table'>
+        <div id='field'></div>
+        <div id='text_print'>
+            <div id='print_text1'>COMPUTERの番です</div>
+            <div id='print_text2'>Playerの番です</div>
+            <div id='print_text3'></div>
+        </div>
+    </div>
+    <div class='point'>
+        <div class='turn_inline1'>
+            <div class='turn_print11' style="font-size:20pt">総ターン:</div>
+            <div class='turn_print12' id="num_turn" style="color:black;text-decoration: underline;font-size:20pt;margin-left: 10px;"></div>
+        </div>
+        <div class='turn_inline2'>
+            <div class='turn_print21' style="font-size:20pt">現在のターン:</div>
+            <div class='turn_print22' id="now_turn" style="color:black;text-decoration: underline;font-size:20pt;margin-left: 10px"></div>
+        </div>
+        <div id='point_table' style="padding: 10px; margin-bottom: 10px; border: 1px solid #333333;"></div>
+        <div class="color_sample">
+            <div class='player'>
+                <div id='col_p'></div>
+                <div id='desc_p'>: Player</div>
+            </div>
+            <div class='players_panel'>
+                <div id='col_pp'></div>
+                <div id='desc_pp'>: Player's Panel</div>               
+            </div>
+            <div class='com'>
+                <div id='col_c'></div>
+                <div id='desc_c'>: COM</div> 
+            </div>
+            <div class='com_panel'>
+                <div id='col_cp'></div>
+                <div id='desc_cp'>: COM's Panel</div>                
+            </div>            
+        </div>
+        <div class='buttons'>
+            <a href="http://localhost:8002/play_page" class="btn-flat-border">RESTART</a>
+        </div>
+    </div> 
+  </div>
+</body>
+<style type="text/css">
+  /* --- テーブル全体のスタイル指定 --------------- */
+ /*.tableArea { */
+#text_print{
+    margin-left: auto;
+    margin-left:200px;
+    margin-top: 40px;
+    font-size:18pt;
+
+}
+.btn-flat-border {
+  display: inline-block;
+  padding: 0.3em 1em;
+  text-decoration: none;
+  color: #67c5ff;
+  border: solid 2px #67c5ff;
+  border-radius: 3px;
+  transition: .4s;
+  font-size:18pt;
+  margin-top: 20px;
+}
+
+.btn-flat-border:hover {
+  background: #67c5ff;
+  color: white;
+}
+.color_sample{
+    padding       : 5px;               /* 余白      */
+}
+#col_p {
+   width: 35px;
+   height: 35px;
+   margin-top: auto;
+   background: #ff1493;
+   display: inline-block;
+}
+#desc_p{
+    font-size:18pt;
+    display: inline-block;
+}
+#col_pp {
+   width: 35px;
+   height: 35px;
+   margin-top: 5px;
+   background: #ffb6C1;
+   display: inline-block;
+}
+#desc_pp{
+    font-size:18pt;
+    display: inline-block;
+}
+#col_c {
+   width: 35px;
+   height: 35px;
+   margin-top: 5px;
+   background: #00bfff;
+   display: inline-block;
+}
+#desc_c{
+    font-size:18pt;
+    display: inline-block;
+}
+#col_cp {
+   width: 35px;
+   height: 35px;
+   margin-top: 5px;
+   background: #add8e6;
+   display: inline-block;
+}
+#desc_cp{
+    font-size:18pt;
+    display: inline-block;
+}
+ .title{
+     margin-left: 150px;
+     margin-top: auto;
+     font-size  : 50pt;
+     display: flex;
+ }
+ .point {
+    font-size:10pt;
+    font-weight:bold;
+    background:#fff;
+    padding:5px;
+    max-width:400px;
+    margin-left: auto;
+    margin-right: 200px;
+    margin-top: 20px;
+    border: 1px solid #999";
+    display: flex;
+}
+
+ .turn_inline1{
+    display: flex;
+ }
+ .turn_inline2 {
+    display: flex;
+ }
+ #point_table {
+    margin-left: auto;
+    margin-right: 100px;
+    margin-top: 30px;
+    font-size      : 18pt;
+    text-align    : center;
+    padding       : 10px;               /* 余白      */
+ }
+ #point_table th{
+   border-collapse: collapse;
+   padding       : 5px;               /* 余白      */
+   border        : 1px #666666 solid; /* 罫線      */
+   cursor        : pointer;           /* カーソル  */
+   background     : #ffffff;
+ }
+ #point_table td{
+  border-collapse: collapse;
+   padding       : 5px;               /* 余白      */
+   border        : 1px #666666 solid; /* 罫線      */
+   cursor        : pointer;           /* カーソル  */
+   background     : #ffffff;
+ }
+ .objct{
+     display: flex;
+     margin-top: auto;
+ }
+ #table_id1 {
+   /*margin         : auto;*/             /* 自動位置   */
+   margin-right:auto;
+   margin-bottom:auto;
+   border-collapse: collapse;         /* 境界線結合 */
+   border-spacing : 0;                /* 罫線間余白 */
+   font-size      : 24pt;              /* 文字サイズ */
+   background     : #ffffff;          /* テーブル全体の背景色 */
+   text-align    : center;            /* 文字位置  */
+   position:relative;
+   margin-top: auto;
+   margin-left:200px;
+ } 
+  /* --- 明細のスタイル指定 ----------------------- */
+ /*.tableArea td { */
+ #table_id1 td{
+   padding       : 5px;               /* 余白      */
+   border        : 1px #666666 solid; /* 罫線      */
+   cursor        : pointer;           /* カーソル  */
+   background     : #ffffff;
+ }
+
+  /* --- セルにカーソルが乗ったとき --------------- 
+ #table_id1 td:hover {
+   background    : #bbb;
+   color         : black;
+ }*/
+</style>
+</html>
