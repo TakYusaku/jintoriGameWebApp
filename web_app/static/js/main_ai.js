@@ -1,5 +1,5 @@
 $(function() {
-    $.get('http://localhost:8002/play_page/game_start')
+    $.get('http://localhost:8002/play_page_vs_ai/game_start')
     .done(function(data) {
         document.getElementById('num_turn').innerHTML = data['turn'];
         console.log(data)
@@ -167,7 +167,7 @@ function ajax_post(position, action) {
     //console.log(Data)
     $.ajax({
       type:'POST',
-      url:'http://localhost:8002/play_page/game_action',
+      url:'http://localhost:8002/play_page_vs_ai/game_action',
       //url:'http://localhost:8002/move',
       data:Data,
       contentType:'application/json',

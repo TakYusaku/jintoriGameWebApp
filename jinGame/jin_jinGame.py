@@ -64,15 +64,15 @@ class jinGAME():
         data_num = []
         for i in range(2):
             if action["is_possible"][i]==str(1): # out of field
-                t_data = {'motion':action["do_motion"][i],'lists':[i+1,4]}
-            elif action["is_possible"][i]==str(2): # is_panel
-                t_data = {'motion':action["do_motion"][i],'lists':[i+1,4]}
-            elif action["is_possible"][i]==str(3): # is_user
+                t_data = {'motion':'move','lists':[i+1,4]}
+            elif action["is_possible"][i]==str(3): # is_panel
+                t_data = {'motion':'move','lists':[i+1,4]}
+            elif action["is_possible"][i]==str(4): # is_user
                 if action["do_motion"][i] == "move":
-                    t_data = {'motion':action["do_motion"][i],'lists':[i+1,4]}
+                    t_data = {'motion':'move','lists':[i+1,4]}
                 elif action["do_motion"][i] == "remove":
-                    t_data = {'motion':action["do_motion"][i],'lists':[i+1,int(self.str2num_action(action["do_direction"][i]))]}
-            elif action["is_possible"][i]==str(4): # no_panel
+                    t_data = {'motion':'remove','lists':[i+1,int(self.str2num_action(action["do_direction"][i]))]}
+            elif action["is_possible"][i]==str(2): # no_panel
                 t_data = {'motion':"move",'lists':[i+1,4]}
             else: # no plobrem
                 t_data = {'motion':action["do_motion"][i],'lists':[i+1,int(self.str2num_action(action["do_direction"][i]))]}

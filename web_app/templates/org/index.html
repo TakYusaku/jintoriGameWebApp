@@ -1,18 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h2 class="text-muted">jintori GAME</h2>
-      </div>
-    </div>
-  </body>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>TEST</title>
+  <script type="text/javascript" src="static/js/main.js"></script>
+  <!--<script src="jquery-3.1.1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+</head>
+<body>
+  <!--<div class="tableArea" id="field"></div>-->
+  <!--<table id="table_id1"></table>-->
+  <script type="text/javascript">
+    makeField({{ pf }}, {{ uf }});
+  </script>
+  <div style="font-size:10pt;font-weight:bold;background:#fff;padding:5px;max-width:400px;margin:10px auto;border:1px solid #999">
+    <div>onClickの結果（表をクリックで表示されます）</div>
+    <div id="clickKekka" style="color:blue"></div>
+  </div>
+</body>
+<style type="text/css">
+  /* --- テーブル全体のスタイル指定 --------------- */
+ /*.tableArea { */
+ #table_id1 {
+   margin         : auto;             /* 自動位置   */
+   border-collapse: collapse;         /* 境界線結合 */
+   border-spacing : 0;                /* 罫線間余白 */
+   font-size      : 18pt;              /* 文字サイズ */
+   background     : #ffffff;          /* テーブル全体の背景色 */
+   text-align    : center;            /* 文字位置  */
+ } 
+  /* --- 明細のスタイル指定 ----------------------- */
+ /*.tableArea td { */
+ #table_id1 td{
+   padding       : 5px;               /* 余白      */
+   border        : 1px #666666 solid; /* 罫線      */
+   cursor        : pointer;           /* カーソル  */
+   background     : #ffffff;
+ }
+
+  /* --- セルにカーソルが乗ったとき --------------- 
+ #table_id1 td:hover {
+   background    : #bbb;
+   color         : black;
+ }*/
+ </style>
 </html>

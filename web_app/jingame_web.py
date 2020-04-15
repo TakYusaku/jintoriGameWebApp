@@ -15,7 +15,7 @@ length = 0
 domain = 'http://localhost:8008'
 
 
-
+'''
 # home
 @app.route('/home')
 def hello():
@@ -82,10 +82,6 @@ def show():
 
 @app.route("/field")
 def field():
-    '''
-    global width, length
-    pf ,uf = api_jintori.s_getField(domain, length, width)
-    '''
     turn,(s_length,s_width),pointfield = api_jintori.s_start(domain)
     pf_reshape = []
     global width, length
@@ -102,7 +98,7 @@ def field():
 @app.route('/test')
 def test():
     return render_template('index_1.html')
-
+'''
 ############ ここから本番 #############
 web_jinGame_env = web_jinGame(domain)
 
@@ -111,16 +107,17 @@ web_jinGame_env = web_jinGame(domain)
 def home():
     return render_template('home_page.html')
 
+#### vs ai ####
 # プレイ画面
-@app.route('/play_page')
+@app.route('/play_page_vs_ai')
 def play_page():
     global web_jinGame_env
     web_jinGame_env._web_init()
 
-    return render_template('play_page.html')
+    return render_template('play_page_vs_ai.html')
 
 # game start
-@app.route('/play_page/game_start',  methods=["GET", "POST"])
+@app.route('/play_page_vs_ai/game_start',  methods=["GET", "POST"])
 def game_start():
     global web_jinGame_env
     data = web_jinGame_env._start_game()
@@ -128,13 +125,37 @@ def game_start():
     return jsonify(data)
 
 # game action
-@app.route('/play_page/game_action', methods=["GET", "POST"])
+@app.route('/play_page_vs_ai/game_action', methods=["GET", "POST"])
 def game_action():
     respond = request.json
     global web_jinGame_env
     res, data = web_jinGame_env._process(respond)
     return jsonify(data)
 
+#### vs human ####
+# プレイ画面
+@app.route('/play_page_vs_human')
+def play_page_vs_human():
+    global web_jinGame_env
+    web_jinGame_env._web_init()
+
+    return render_template('play_page_vs_human.html')
+
+# game start
+@app.route('/play_page_vs_human/game_start',  methods=["GET", "POST"])
+def game_start_vs_human():
+    global web_jinGame_env
+    data = web_jinGame_env._start_game()
+    print(data)
+    return jsonify(data)
+
+# game action
+@app.route('/play_page_vs_human/game_action', methods=["GET", "POST"])
+def game_action_vs_human():
+    respond = request.json
+    global web_jinGame_env
+    res, data = web_jinGame_env._process_human(respond)
+    return jsonify(data)
 '''
 # game restart
 @app.route('/play_page/restart', methods=["GET", "POST"])
