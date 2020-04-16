@@ -56,8 +56,11 @@ unfinished...
 * server-field(diectory)  
     フィールドを構成するgo-langファイル  
 
+## dockerfile
+webapp も DQN学習　のも，docker/ubuntu/ にあるDockerfileを使ってください
 ## docker を立ち上げる時の注意
 > docker run -it -d -p 8001:8000 -p 8002:5000 -p 8003:8008-v [host側の作業ディレクトリ(このjintoriGameのディレクトリ)]:/home/develop --name [image名] [container名] bash  
+
 でrunしてください.
 
 ## webappの使い方
