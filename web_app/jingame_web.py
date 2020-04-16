@@ -12,93 +12,9 @@ from jingame_core_src import *
 ## global variable
 width = 0
 length = 0
-domain = 'http://localhost:8008'
+domain = 'http://localhost:8008' # field serverのアドレス
 
 
-'''
-# home
-@app.route('/home')
-def hello():
-    turn,(length,width),pointfield = api_jintori.s_start('http://localhost:8000')
-    return str(pointfield)
-
-# play page
-@app.route('/play', methods=["GET", "POST"])
-def playGame():
-    title = 'jinGame'
-    return title
-
-# move
-@app.route('/play/move', methods=["GET", "POST"])
-def move():
-    # 移動したい位置を取得(pos)し，
-    respond = json.loads(request.form['text'])
-    res, code = is_right_(domain, respond)
-    if res:
-        tmp = 'ok'
-        show()
-    else:
-        if code==1:
-            tmp = 'nos'
-            return tmp
-        else:
-            tmp = 'no'
-            return tmp
-
-# move
-@app.route('/move', methods=["GET", "POST"])
-def move_ajx():
-    #移動したい位置を取得(pos)し，
-    respond = request.json
-    print(respond)
-    global width, length, domain
-    res, code = is_right_(domain, respond)
-    pf ,uf = api_jintori.s_getField(domain, length, width)
-    data = {
-        'is_right':res,
-        'code':code,
-        'pf':pf,
-        'uf':uf
-    }
-    #data = get_send_data(domain, length, width)
-    return jsonify(data)
-
-
-@app.route("/index")
-def index():
-    turn,(s_length,s_width),pointfield = api_jintori.s_start(domain)
-    pf_reshape = []
-    global width, length
-    width = s_width
-    length = s_length
-    pf ,uf = api_jintori.s_getField(domain, length, width)
-    return render_template('index.html', pf=pf, uf=uf)
-
-@app.route("/show")
-def show():
-    global width, length
-    pf ,uf = api_jintori.s_getField(domain, length, width)
-    return render_template('index.html', pf=pf, uf=uf)
-
-@app.route("/field")
-def field():
-    turn,(s_length,s_width),pointfield = api_jintori.s_start(domain)
-    pf_reshape = []
-    global width, length
-    width = s_width
-    length = s_length
-    pf ,uf = api_jintori.s_getField(domain, length, width)
-    data = {
-        'pf':pf,
-        'uf':uf
-    }
-    print(data)
-    return jsonify(data)
-
-@app.route('/test')
-def test():
-    return render_template('index_1.html')
-'''
 ############ ここから本番 #############
 web_jinGame_env = web_jinGame(domain)
 

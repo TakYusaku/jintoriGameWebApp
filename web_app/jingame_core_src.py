@@ -1,9 +1,9 @@
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from api import api_jintori as aj
-from jinGame import jin_jinGame as jj
-from jinGame import jin_NN as NN
+from ai_model import api_jintori as aj
+from ai_model import jin_jinGame as jj
+from ai_model import jin_NN as NN
 from jingame_consts import *
 
 import numpy as np

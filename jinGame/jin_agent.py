@@ -634,6 +634,7 @@ class jinGame_DQNAgent():
             #  2.4 行動させる
         epochs = EPOCHS
         for epc in range(epochs):
+            print('now_epc:',epc)
             # game start
             # self.agent_history()の初期化
             usr1_data = {'motion':"move", "lists": [1,4]}
@@ -791,6 +792,7 @@ class jinGame_DQNAgent():
         games_num = NUMBER_OF_SELFPLAY
 
         for g_num in range(games_num):
+            print('now_selfplay:',g_num)
             before_features = []
             turn, length, width = env._start()
             # self.agent_history()の初期化
