@@ -59,7 +59,7 @@ unfinished...
 ## dockerfile
 webapp も DQN学習　のも，docker/ubuntu/ にあるDockerfileを使ってください
 ## docker を立ち上げる時の注意
-> docker run -it -d -p 8001:8000 -p 8002:5000 -p 8003:8008-v [host側の作業ディレクトリ(このjintoriGameのディレクトリ)]:/home/develop --name [image名] [container名] bash  
+> docker run -it -d -p 8002:5000 -p 8003:8008 -v [host側の作業ディレクトリ(このjintoriGameのディレクトリ)]:/home/develop --name [image名] [container名] bash  
 
 でrunしてください.
 
@@ -67,10 +67,7 @@ webapp も DQN学習　のも，docker/ubuntu/ にあるDockerfileを使って�
 1.server-field/jintori-field_copied.go を 'go run jintori-field_copied.go'で実行する  
 2.他のターミナルで，web_app/jingame_web.py を 'python3 jingame_web.py' で実行する  
 3.'http://localhost:8002/home_page'で使用できる
-## dqnの実行の仕方
-1.server-field/jintori-field.go を 'go run jintori-field.go'で実行する  
-(1.5 jinGame/jin_parameter.py で学習回数を変更する)  
-2.jinGame/jin_execute.py を 'python3 jin_execute.py'で実行する.
+
 ## jinGameのソースコードについて  
 * jin_NN.py  
 ネットワークの構成  

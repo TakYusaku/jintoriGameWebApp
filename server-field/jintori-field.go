@@ -1,4 +1,4 @@
-// port num is 8000
+// port num is 8008
 // last update is 2020/03/09(mon)
 package main
 
@@ -101,7 +101,7 @@ func StartServer(w http.ResponseWriter, r *http.Request) { // ゲームの開始
   // ターン数,縦横の選定
     rand.Seed(time.Now().UnixNano())
     // turn=rand.Intn(5) +5  // ターン数 (40~80)
-    turn=rand.Intn(15) +30  // ターン数 (30~50)
+    turn=rand.Intn(15) +30  // ターン数 (25~35)
     length=rand.Intn(4)+8  // 縦の長さ (8~12)
     width=rand.Intn(4)+8   // 横の長さ (8~12)
 
@@ -584,10 +584,10 @@ func main() {
     // http.HandleFunc("/initpos", InitposServer)
 
     // ログ出力
-    log.Printf("Start Go HTTP Server (port number is 8000)")
+    log.Printf("Start Go HTTP Server (port number is 8008)")
 
     // http.ListenAndServeで待ち受けるportを指定
-    err := http.ListenAndServe(":8000", nil)
+    err := http.ListenAndServe(":8008", nil)
 
     // エラー処理
     if err != nil {
