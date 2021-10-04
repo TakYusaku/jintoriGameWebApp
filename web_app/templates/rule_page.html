@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>jintoriGAME Rule</title>
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script type="text/javascript" src="static/js/main_human.js"></script>-->
+</head>
+<body>
+    <div class='top_block'>
+        <h1 class='title'>jintori GAME's rule</h1>
+        <div class='button_block'>
+            <div class='button1'>
+                <a href="http://localhost:8002/home_page" class="btn-flat-border">GO HOME</a>
+            </div>
+        </div>
+    </div>
+    <div class='common_rule'>
+        <h2 class='section'>●共通のルール</h2>
+            <h3 class='subsection'>⚪︎競技フィールドについて</h3>
+                <p class='sentence'>・フィールドサイズは，縦・横が8~12マスのランダムで決定されます．<br>
+                    ・フィールドサイズは，縦・横が8~12マスのランダムで決定されます．<br>
+                    ・操作できるコマ(エージェント)は，各チーム1体ずつです．<br>
+                    ・フィールドの各マスには, -2~2 の整数値が割り当てられます．<br>
+                    ・そして，1ターンごとに各マスのポイントはランダムに変化します．
+                </p>
+            <h3 class='subsection'>⚪︎試合の進行</h3>
+                <p class='sentence'>・フィールドサイズは，縦・横が8~12マスのランダムで決定されます．<br>
+                    ・ターン数は 30~45の間でランダムに決定されます．全ターン終了することでゲームは終了します．<br>
+                    ・エージェントが取れる行動は，「移動」，「タイル除去」，「停留」の3つです．<br>
+                    &ensp;-> 「移動」は，周囲8方向の1マスに移動できます．<br>
+                    &ensp;&ensp;&ensp;&ensp;相手チームのタイルが置かれたマスには移動できませんが，移動したい場合は<br>
+                    &ensp;&ensp;&ensp;タイル除去で相手チームのタイルを取り除いた後に次のターンでマスへ移動しなければなりません．<br>
+                    &ensp;-> 「タイル除去」は，8方向のいずれかの方向に隣接する相手チーム，自チームのタイルを除去できます．<br>
+                    &ensp;&ensp;&ensp;&ensp;相手チームのエージェントがいるマスをタイル除去に指定できますが，そのエージェントが停留を選択すると除去できません．<br>
+                    &ensp;-> 「停留」は，何もせずに現在のいるマスに停留できます．
+                </p>
+            <h3 class='subsection'>⚪︎得点の計算</h3>
+                <p class='sentence'>「タイルポイント」，「領域ポイント」，「合計点」があります．<br>
+                    ・タイルポイントとは，自チームが置いたタイルのポイントの合計です．<br>
+                    ・領域ポイントとは，自チームのタイルによって囲まれた領域のマスの合計です．<br>
+                    ・合計ポイントとは，タイルポイントと領域ポイントの合計です．
+                </p>
+            <h3 class='subsection'>⚪︎勝敗判定</h3>
+                <p class='sentence'>以下の優先度で勝敗が決定します．<br>
+                    1.タイルポイントと領域ポイントの「合計ポイントが大きい方」のチーム <br>
+                    2.合計ポイントが等しい場合，「タイルポイントが大きい方」のチーム <br>
+                    3.合計ポイントとタイルポイントが等しい場合，引き分けです．
+                </p>
+        <h2 class='section'>●共通の操作方法</h2>
+            <p class='sentence'>基本のルールは「共通のルール」に準じます．</p>
+            <p class='sentence'>
+                ・選択可能なタイルは，「周囲8方向」に加えて「現在のタイル」から1マスです．表示されるタイルに直接クリックしてください.<br>
+                &ensp; -> 誤った場所のタイルを選択した場合，再度選択を行います．ターンは進みません．<br>
+                ・白いパネルには移動のみできます．<br>
+                ・自分のパネルに対して，移動と削除が選択できます．その場合，表示されるアラートにしたがってボタンを選択してください．<br>
+                ・相手パネルに対して，削除のみ選択できます．
+            </p>
+        <h2 class='section'>●VS HUMANの操作方法</h2>
+            <p class='sentence'>Player1, Player2に分かれてゲームを行います．</p>
+        <h2 class='section'>●VS AIの操作方法</h2>
+            <p class='sentence'>Player1となり，ゲームを行います．</p>
+    </div>
+</body>
+<style>
+/*
+.title{ 
+    width:500px;
+    height:200px; 
+    position:absolute;
+    left:50%; 
+    top:50%; 
+    margin-left:-200px; 
+    margin-top:-120px;
+    font-size  : 50pt;
+}*/
+.title{
+    margin-left: 150px;
+    margin-top: auto;
+    font-size  : 50pt;
+    display:inline-block;
+}
+.section{
+    margin-left: 150px;
+    margin-top: auto;
+    font-size  : 20pt;
+}
+.subsection{
+    margin-left: 150px;
+    margin-top: auto; 
+}
+.sentence{
+    margin-left: 180px;
+    margin-top: auto;    
+}
+.button_block{
+    width:500px;
+    height:200px; 
+    position:absolute;
+    /*left:50%; 
+    top:50%; */
+    margin-left:100px; 
+    margin-top:0px;   
+    display:inline-block;
+}
+.button1{
+    margin: auto;
+    display: inline;
+}
+.btn-flat-border {
+  display: inline-block;
+  padding: 0.3em 1em;
+  text-decoration: none;
+  color: #67c5ff;
+  border: solid 2px #67c5ff;
+  border-radius: 3px;
+  transition: .4s;
+  font-size:18pt;
+  margin-top: 20px;
+}
+
+.btn-flat-border:hover {
+  background: #67c5ff;
+  color: white;
+}
+</style>
+</html>
