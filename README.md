@@ -1,5 +1,5 @@
 # Jintori GAME 
-unfinished...
+
 ## directory structure
 ```
 .
@@ -45,7 +45,7 @@ docker/ubuntu/ にあるDockerfileを使ってください
 でrunしてください.
 
 ## webappの使い方
-1.server-field/jintori-field_copied.go を 'go run jintori-field_copied.go'で実行する  
+1.server-field/jintori-field.go を 'go run jintori-field.go'で実行する  
 2.他のターミナルで，web_app/jingame_web.py を 'python3 jingame_web.py' で実行する  
-3.'http://localhost:8002/home_page'で使用できる
+3.'http://localhost:8002/home_page' で使用できる
 
