@@ -1,4 +1,5 @@
 # Jintori GAME 
+※ AIは正しく育成できていません．  
 
 ## directory structure
 ```
