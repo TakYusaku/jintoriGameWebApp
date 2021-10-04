@@ -40,7 +40,7 @@
 ## dockerfile
 docker/ubuntu/ にあるDockerfileを使ってください
 ## docker を立ち上げる時の注意
-> docker run -it -d -p 8002:5000 -p 8003:8008 -v [host側の作業ディレクトリ(このjintoriGameのディレクトリ)]:/home/develop --name [image名] [container名] bash  
+> docker run -it -d -p 8002:5000 -p 8003:8008 -v [host側の作業ディレクトリ(このjintoriGameのディレクトリ)]:/home/develop --name [container名]  [image名] bash  
 
 でrunしてください.
 
